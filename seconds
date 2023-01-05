@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from datetime import datetime, timedelta
+#code for online compiler https://www.tutorialspoint.com/execute_matplotlib_online.php
+
+TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+ot = ['2022-12-22 20:15:33', '2022-12-23 17:22:33', '2022-12-23 16:44:33', '2012-12-24 15:33:12']
+ct = ['2022-12-22 20:45:33', '2022-12-23 19:21:33', '2022-12-25 19:00:00', '2012-12-29 19:33:12']
+otbjs = []
+ctobj = []
+for x in ot:
+    otbjs.append(datetime.strptime(x,TIME_FORMAT))
+for i in ct:
+    ctobj.append(datetime.strptime(i,TIME_FORMAT))
+
+sumet=[]
+for x,i in zip(ctobj,otbjs):
+        temp = x - i
+        sumet.append(temp)
+limit30 = []
+limit60 =[]
+limit90 = []
+limit120 = []
+limit160 =[]
+over160 = []
+for x in sumet:
+    x = x.total_seconds()
+    if x > 9600:
+        over160.append(x)
+    elif x > 7200:
+        limit160.append(x)
+    elif x > 5400:
+        limit120.append(x)
+    elif x > 3600:
+        limit90.append(x)
+    elif x > 1800:
+        limit60.append(x)
+    elif x > 0:
+        limit30.append(x)
+    else:
+        break
+minutes = [ '30', '60', '90', '120', '160', '240+']
+axis = [ len(limit30), len(limit60), len(limit90), len(limit120), len(limit160), len(over160)]
+
+plt.bar(minutes, axis)
+colors = ['green','brown','purple','teal','red', 'magenta']
+plt.title('Normal Distribution', fontsize=14)
+plt.xlabel('Minutes', fontsize=14)
+plt.ylabel('Percentage of Total Incidents', fontsize=14)
+plt.show()
