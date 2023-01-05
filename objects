@@ -1,0 +1,46 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from datetime import datetime, timedelta
+from datetime import datetime, timedelta
+#code for online compiler https://www.tutorialspoint.com/execute_matplotlib_online.php
+TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+ot = ['2022-12-22 20:15:33', '2022-12-23 17:22:33', '2022-12-23 16:44:33', '2012-12-24 15:33:12']
+ct = ['2022-12-22 20:45:33', '2022-12-23 19:21:33', '2022-12-25 19:00:00', '2012-12-29 19:33:12']
+otbjs = []
+ctobj = []
+for x in ot:
+    otbjs.append(datetime.strptime(x,TIME_FORMAT))
+for i in ct:
+    ctobj.append(datetime.strptime(i,TIME_FORMAT))
+
+sumet=[]
+for x,i in zip(ctobj,otbjs):
+        temp = x - i
+        sumet.append(temp)
+limit30, limit60, limit90, limit120, limit160, over160 = 0,0,0,0,0,0
+y_axis = []
+for x in sumet:
+        print(x.total_seconds())
+
+for x in sumet:
+        if x > timedelta(hours=2,minutes=30) and x !=timedelta(hours=0,minutes=0,seconds=0):
+                over160 += 1
+        if x > timedelta(hours=2) and x <= timedelta(hours=2, minutes=30):
+                limit160+=1
+        if x > timedelta(hours=1) and x <= timedelta(hours=2):
+                limit120+=1
+        if x > timedelta(minutes=30) and x <=timedelta(hours=1):
+                limit60 +=1
+        if x >timedelta(minutes=0) and x <= timedelta(minutes=30):
+                limit30 +=1
+        
+print(limit30, limit60, limit90,   limit120, limit160, over160)
+
+y_axis= [limit30, limit60, limit90,   limit120, limit160, over160]
+x_axis = [ '30', '60', '90', '120', '160', '160+']
+plt.bar(x_axis, y_axis)
+colors = ['green','brown','purple','teal','red', 'magenta']
+plt.title('Normal Distribution', fontsize=14)
+plt.xlabel('Minutes', fontsize=14)
+plt.ylabel('Percentage of Total Incidents', fontsize=14)
+plt.show()
